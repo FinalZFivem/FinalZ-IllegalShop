@@ -12,6 +12,4 @@
  * Designing a custom UI for it
  * Make it compatible with QBcore
 
-![image|690x453](upload://vyrPzlVY6ALG5v49aBTb8yOGYXm.png)
-![image|520x500](upload://fygmNS94dSvMuI4itK2CQMP9N1U.png)
-![image|536x500](upload://1ioM3t0lVALHMwI46moz0JeVUZk.png)
+Our discord server for support or more scripts:  https://discord.gg/nJ4BDGWrrV
