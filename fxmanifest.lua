@@ -1,14 +1,12 @@
 fx_version 'cerulean'
 game 'gta5'
 lua54 'yes'
-description 'ALTRP illegal shop using esx'
-author 'goshawk1337'
+description 'Standalone illegal shop'
+author 'FinalZ Scripts'
 version '1.0.0'
-
 
 shared_scripts {
     'config.lua',
-    '@es_extended/imports.lua',
     '@ox_lib/init.lua',
 }
 
@@ -20,6 +18,14 @@ server_scripts {
     'webhook.lua',
     'server/sv_main.lua',
 }
+
+ui_page 'ui/index.html'
+
+files {
+    'ui/index.html',
+    'ui/app.js'
+}
+
 dependencies {
     "ox_lib",
     "ox_inventory"
