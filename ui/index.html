@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <title>Illegal Shop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<style>
+    .title {
+        text-shadow: 0px 0px 7px rgba(255,0,0,0.64);
+    }
+
+    .glow {
+        box-shadow: 0px 0px 7px rgba(255,0,0,0.64);
+    }
+    ::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+        border-radius: 10px;
+        background: #424242;
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+        background: #ff0000;
+        border-radius: 10px;
+    }
+
+    @keyframes hopin {
+    from {
+        opacity: 0;
+        transform: scale(0.9) rotateY(90deg);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+}
+
+@keyframes fade {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+@keyframes hopout {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotateY(0deg);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.9) rotateY(90deg);
+    }
+}
+    input[type="search"]::-webkit-search-cancel-button {
+        -webkit-appearance: none;
+        appearance: none;
+    }
+</style>
+<body class="bg-black bg-opacity-70" style="display:none;">
+    <div id="app">
+        <div class="h-screen flex items-center justify-center">
+            <div class="w-[72vh] h-[83vh] bg-[#232323] rounded-3xl border-[#232323] border-2 flex items-center justify-center overflow-hidden">
+              <div class="w-[70vh] h-[81.5vh] bg-[#19191B] rounded-xl">
+    
+                      <div class="mt-12 flex flex-row ml-12">
+                        <h1 class="title text-red-500 text-4xl font-bold">{{ locale === 'EN' ? 'ILLEGAL SHOP' : 'ILLEGÁL BOLT' }}</h1>
+                        <input type="search" v-model="searchQuery" :placeholder="locale === 'EN' ? 'Search product...' : 'Termék keresés...'" class="no-clear ml-12 w-[13vw] pl-2 h-[4vh] my-auto rounded border-none focus:outline-none focus:border-transparent bg-[#101010] text-[#FFFFFF] placeholder-[#333333] mr-12">
+                    </div>
+                    <div class="flex flex-col ml-12 mt-1 max-w-[16vw]">
+                        <p class="text-md text-[#999999] font-bold">{{ locale === 'EN' ? 'BUY THINGS' : 'TÁRGY VÉTEL' }}</p>
+                        <p class="text-sm text-[#444444] font-medium">{{ locale === 'EN' ? 'In this not so legal shop you can buy any weapon or other usable item.' : 'Ebben a nem túl legális boltban vehetsz mindenféle fegyvert, vagy egyéb használható tárgyat.' }}</p>
+                    </div>
+                    <div class="flex flex-row ml-12 mt-3 gap-4">
+                        <button 
+                            @click="openMenu('buy', items_for_buy, items_to_sell, enableSell)" 
+                            :class="{'bg-red-500 text-white glow border-none': menuType === 'buy', 'bg-transparent hover:bg-red-500 hover:text-white': menuType !== 'buy'}"
+                            :disabled="menuType === 'buy'"
+                            class="transition-all duration-500 w-32 border border-[#444444] text-md font-bold px-4 py-1 rounded mt-4 text-white">
+                            {{ locale === 'EN' ? 'BUY' : 'VÁSÁRLÁS' }}
+                        </button>
+                        <button 
+                            v-if="enableSell" 
+                            @click="openMenu('sell', items_for_buy, items_to_sell, enableSell)" 
+                            :class="{'bg-red-500 text-white glow border-none': menuType === 'sell', 'bg-transparent hover:bg-red-500 hover:text-white': menuType !== 'sell'}"
+                            :disabled="menuType === 'sell'"
+                            class="transition-all duration-500 w-32 border border-[#444444] text-md font-bold px-4 py-1 rounded mt-4 text-white">
+                            {{ locale === 'EN' ? 'SELL' : 'ELADÁS' }}
+                        </button>
+                    </div>
+                    <div class="h-[51vh] overflow-y-auto mt-7 pr-8 pl-12 mr-8" id="gridanim">
+                        <div class="grid grid-cols-3 gap-3 gap-x-7 max-h-[50vh]" v-if="filteredItems.length">
+                            <div v-for="item in filteredItems" :key="item.name" class="group bg-[#101010] w-[8.75vw] h-[16vh] rounded-md flex flex-col items-center overflow-hidden border border-[#444444] transition-all duration-500 hover:border-red-500">
+                                <h2 class="text-md text-[#FFFFFF] font-medium text-center mt-2">{{ item.label }}</h2>
+                                <p class="text-sm text-red-500 font-medium text-center mt-1">${{ item.price }}</p>
+                                <img :src="'nui://ox_inventory/web/images/' + item.name + '.png'" class="w-full h-[90px] object-contain mx-auto">
+                                <button @click="selectItem(item)" class="bg-[#313132] hover:bg-red-400 hover:text-[#232323] transition-all duration-500 w-full text-[#444444] text-md font-bold group-hover:bg-red-500">
+                                    {{ menuType === 'sell' ? (locale === 'EN' ? 'SELL' : 'ELADÁS') : (locale === 'EN' ? 'BUY' : 'VÁSÁRLÁS') }}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+              
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.2.31/dist/vue.global.prod.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
