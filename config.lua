@@ -1,9 +1,7 @@
 Config = {}
-Config.Locale = "HU"
+Config.Locale = "EN"
 Config.CashItemName = "money"
-Config.EnableSell = true                  -- false : sell is not available
 Config.Target = true                      --false : markers
-Config.menuAlign = "top-left"             ---- top-left | top-right | bottom-left | bottom-right | center |
 Config.Textui_enabled = not Config.Target --Dont bother
 
 Config.TextUI = function(msg, type)
@@ -26,7 +24,7 @@ AddEventHandler("shop:notify", function(type, msg)
     end
 
     lib.notify({
-        title = "market",
+        title = "Market",
         description = msg,
         type = type
     })
@@ -37,19 +35,19 @@ Config.Shops = {
     [1] = {
         coords = vector4(86.4169, 811.4008, 211.1208, 232.9422),
         ped = "a_m_m_beach_01",
+        enableSell = true,
         label = {
             enabled = true,
             label = "Illegal trader",
             distance = 15.0
         },
         items_for_buy = {
-            { name = "bread",           label = "kenyer", price = 50 },
-            { name = "water",           label = "water",  price = 222 },
-            { name = "weapon_appistol", label = "pistol", price = 22 }
-
+            { name = "burger",           label = "Burger", price = 50 },
+            { name = "water",           label = "Víz",  price = 222 },
+            { name = "weapon_appistol", label = "Pistol", price = 22 }
         },
-        items_to_sell = {
-            { name = "bread", label = "kenyer", price = 110 }
+        items_to_sell = { -- Only if enableSell is true
+            { name = "ammo-9", label = "9mm Ammo", price = 110 }
         },
         blip = {
             enabled = true,
@@ -66,19 +64,44 @@ Config.Shops = {
             width = 1.0,
             height = 1.0
         }
-
-    }
+    },
+    [2] = {
+        coords = vector4(698.663757, 617.235168, 129.030762, 70.866142),
+        ped = "a_m_m_beach_01",
+        enableSell = false,
+        label = {
+            enabled = true,
+            label = "Illegal trader",
+            distance = 15.0
+        },
+        items_for_buy = {
+            { name = "lockpick", label = "Lockpick", price = 5 }
+        },
+        items_to_sell = { -- Only if enableSell is true
+            { name = "fishing_rod", label = "Fishing rod", price = 10 }
+        },
+        blip = {
+            enabled = false,
+            label = "Illegal shop",
+            sprite = 123,
+            scale = 1.0,
+            colour = 22
+        },
+        MarkerSettings = {
+            type = 2,
+            size = { x = 1.0, y = 1.0, z = 1.0 },
+            rgba = { r = 13, g = 3, b = 7, a =33 },
+            rotate = false,
+            width = 1.0,
+            height = 1.0
+        }
+    },
 }
 
 Config.Locales = {
     ["EN"] = {
-        BuyTarget = "Item buy",
-        SellTarget = "Item sell",
+        BuyTarget = "Illegal shop",
         textUI = "[E] - Open menu",
-        SelectSell = "Tárgy eladás",
-        SelectBuy = "Item buy",
-        BuyMenuTitle = "Item sell",
-        SellMenuTitle = "Sell item",
         NotEnoughMoney = "Not enough money",
         SuccessBuy = "Success buy",
         SuccessSell = "Success sell",
@@ -86,13 +109,8 @@ Config.Locales = {
         HasNoItem = "Item not founded"
     },
     ["HU"] = {
-        BuyTarget = "tárgy vétel",
-        SellTarget = "tárgy eladás",
-        textUI = "[E] - nyisd meg a menüt",
-        SelectSell = "Tárgy eladás",
-        SelectBuy = "Tárgy Vásárlása",
-        BuyMenuTitle = "Tárgy Vásárlása",
-        SellMenuTitle = "Tárgy Eladása",
+        BuyTarget = "Illegálbolt",
+        textUI = "[E] - Nyisd meg a menüt",
         NotEnoughMoney = "Sikertelen vásárlás, nincs elég pénzed",
         SuccessBuy = "Sikeres vásárlás",
         SuccessSell = "Sikeres eladás",
